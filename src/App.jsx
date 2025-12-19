@@ -1,5 +1,7 @@
 import React, { useRef, useEffect, useState } from "react";
 
+const API_URL = import.meta.env.VITE_API_URL;
+
 
 // Componente reutilizable para animar al hacer scroll
 function RevealOnScroll({ children, className = "" }) {
@@ -132,7 +134,7 @@ export default function App() {
     e.preventDefault();
     const payload = { nombre, clinica, contacto };
 
-    const res = await fetch("http://localhost:8081/api/contacto", {
+    const res = await fetch(`${API_URL}/api/contacto`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(payload),
