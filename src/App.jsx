@@ -132,23 +132,38 @@ export default function App() {
 
   const enviarFormularioContacto = async (e) => {
     e.preventDefault();
-    const payload = { nombre, clinica, contacto };
 
-    const res = await fetch(`${API_URL}/api/contacto`, {
-      method: "POST",
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(payload),
-    });
+    const formData = new FormData(e.currentTarget);
+    const payload = {
+      nombre: formData.get("nombre"),
+      clinica: formData.get("clinica"),
+      contacto: formData.get("contacto"),
+      mensaje: formData.get("mensaje") || "",
+    };
 
-    const data = await res.json();
+    try {
+      const res = await fetch(`${import.meta.env.VITE_API_URL}/api/contacto`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(payload),
+      });
 
-    if (!res.ok) {
-      alert(data.error || "Error al enviar");
-      return;
+      const text = await res.text();
+      const data = text ? JSON.parse(text) : {};
+
+      if (!res.ok) {
+        alert(data.error || `Error al enviar (${res.status})`);
+        return;
+      }
+
+      alert("Enviado ✅");
+      e.currentTarget.reset();
+    } catch (err) {
+      console.error(err);
+      alert("No se pudo conectar con el servidor.");
     }
+  };
 
-    alert("Enviado ✅");
-  }
 
 
 
@@ -1003,7 +1018,7 @@ export default function App() {
               <input
                 name="clinica"
                 onChange={(e) => setClinica(e.target.value)}
-                
+
                 className="w-full mt-1 px-3 py-2 bg-slate-950 border border-slate-700 rounded-lg text-sm focus:border-emerald-400 outline-none"
                 placeholder="Ej: Veterinaria Paws"
               />
