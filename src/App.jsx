@@ -133,12 +133,14 @@ export default function App() {
   const enviarFormularioContacto = async (e) => {
     e.preventDefault();
 
+
+ const form = e.currentTarget;
     const formData = new FormData(e.currentTarget);
     const payload = {
       nombre: formData.get("nombre"),
       clinica: formData.get("clinica"),
       contacto: formData.get("contacto"),
-      mensaje: formData.get("mensaje") || "",
+      // mensaje: formData.get("mensaje") || "",
     };
 
     try {
@@ -157,7 +159,8 @@ export default function App() {
       }
 
       alert("Enviado ✅");
-      e.currentTarget.reset();
+      form.reset();
+      // e.currentTarget.reset();
     } catch (err) {
       console.error(err);
       alert("No se pudo conectar con el servidor.");
