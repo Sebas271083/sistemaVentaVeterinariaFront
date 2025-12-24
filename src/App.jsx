@@ -158,6 +158,8 @@ export default function App() {
         return;
       }
 
+      console.log("Formulario enviado:", data);
+
       alert("Enviado ✅");
       form.reset();
       // e.currentTarget.reset();
